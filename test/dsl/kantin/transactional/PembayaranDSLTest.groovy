@@ -28,7 +28,5 @@ class PembayaranDSLTest extends GroovyTestCase {
             dibayar_sejumlah 100000
             tunai()
         }
-
-        myPayment.cetak_detail_pembayaran()
     }
 }
