@@ -1,4 +1,4 @@
-package dsl.kantin.Order
+package dsl.kantin.transactional
 
 class OrderDSL {
     static def pesanan = []

@@ -1,4 +1,4 @@
-package dsl.kantin.Order
+package dsl.kantin.transactional
 
 import dsl.kantin.living.Gender
 import dsl.kantin.living.PelangganDSL

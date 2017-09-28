@@ -1,6 +1,6 @@
 package dsl.kantin.living
 
-import dsl.kantin.Order.OrderDSL
+import dsl.kantin.transactional.OrderDSL
 import dsl.kantin.container.AntrianDSL
 
 class PelangganDSL {
