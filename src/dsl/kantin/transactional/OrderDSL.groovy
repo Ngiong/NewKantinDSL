@@ -1,20 +1,44 @@
 package dsl.kantin.transactional
 
 class OrderDSL {
-    static def pesanan = []
+    static def pesanan = [:]
     static int count = 0
+    static boolean makanditempat, bungkus
 
-    static def pesan(pelanggan, menu){
-        pesanan << [pelanggan, menu]
-        count ++
+    def static Pesan(closure){
+        OrderDSL order = new OrderDSL()
+        closure.delegate = order
+        closure()
     }
 
-    static def semua_order() {
-        println("\nTotal pesanan : " + count)
-        println("DETAIL : ")
-        for(i in pesanan)
-            println(i[0] + " memesan " + i[1])
+    def tambah(jumlah, produk) {
+        println("Dapat pesanan : " + produk + " x" + jumlah)
+        if(pesanan.containsValue(produk)) {
+            int total = (int)pesanan.get(produk)
+            pesanan.replace(produk, total, total+1)
+        } else
+            pesanan.put(produk, jumlah)
+        count += jumlah
+    }
 
-        return count
+    def batal(jumlah, produk) {
+        println("Pesanan batal : " + produk + " x" + jumlah)
+        int total = (int) pesanan.get(produk)
+        if(total > 1){
+            pesanan.replace(produk, total, total-1)
+        } else {
+            pesanan.remove(produk)
+        }
+        count -= jumlah
+    }
+
+    def DineIn() {
+        this.makanditempat = true
+        this.bungkus = false
+    }
+
+    def TakeAway() {
+        this.makanditempat = false
+        this.bungkus = true
     }
 }

@@ -5,17 +5,26 @@ import dsl.kantin.living.PelangganDSL
 
 class OrderDSLTest extends GroovyTestCase{
     void testOrderDSL() {
-        def robert = new PelangganDSL(
-                name: 'Robert',
-                gender: Gender.MALE,
-                occupation: 'Mahasiswa',
-                walletBalance: 100000
-        )
+        PelangganDSL.datanglah {
+            nama "Robert"
+            adalah_seorang "Mahasiswa"
+            cowok()
+            dengan_isi_dompet 100000
+            mulai_mengantri()
+        }
 
-        robert.melakukan_pemesanan("Soto")
-        robert.melakukan_pemesanan("Susu")
+        OrderDSL.Pesan {
+            tambah (2,"Nasi Goreng")
+            tambah (1, "Nasi Putih")
+            batal (1, "Nasi Putih")
+            batal (1, "Nasi Goreng")
+            DineIn()
+        }
 
-        int count = OrderDSL.semua_order()
-        assert(count == 2)
+        assert(OrderDSL.count == 1)
+        assert(OrderDSL.pesanan.get("Nasi Goreng") == 1)
+        assert(OrderDSL.pesanan.get("Nasi Putih") == null)
+        assert(OrderDSL.makanditempat == true)
+        assert(OrderDSL.bungkus == false)
     }
 }
