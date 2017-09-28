@@ -26,7 +26,7 @@ class MenuDictionaryDSL {
 
     def harga (price) {
         if (this.tambahItem) {
-            if (this.menu.containsValue(tmpNama))
+            if (this.menu.containsKey(tmpNama))
                 this.menu.replace(tmpNama, price)
             else
                 this.menu.put(tmpNama, price)
@@ -42,5 +42,12 @@ class MenuDictionaryDSL {
         for (key in menu.keySet()) {
             println("[*]" + String.format("%25s", key) + " | Rp. " + (long) menu.get(key) + ",-")
         }
+    }
+
+    def static getPrice (nama) {
+        def menu = instance.menu
+        if (menu.containsKey(nama)) return (long) menu.get(nama)
+        else throw NoSuchElementException("Item: " + nama + " does not exist.")
+
     }
 }

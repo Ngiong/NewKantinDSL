@@ -1,5 +1,7 @@
 package dsl.kantin.transactional
 
+import dsl.kantin.container.MenuDictionaryDSL
+
 class OrderDSL {
     static def pesanan = [:]
     static int count = 0
@@ -45,8 +47,11 @@ class OrderDSL {
     }
 
     def cetak_detail_pesanan() {
+        def total = 0
         for (key in pesanan.keySet()) {
-            println("[*]" + key + " -> " + (int) pesanan.get(key) + " porsi")
+            def subtotal = (int) pesanan.get(key) * MenuDictionaryDSL.getPrice(key)
+            println("[*]" + String.format("%30s", (int) pesanan.get(key) + "x " + key) + " | Rp. " + subtotal + ",-")
         }
+        println("\n" + String.format("%36s", "TOTAL | ") + "Rp. " + total + ",-")
     }
 }
