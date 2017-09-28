@@ -1,5 +1,6 @@
 package dsl.kantin.living
 
+import dsl.kantin.Order.OrderDSL
 import dsl.kantin.container.AntrianDSL
 
 class PelangganDSL {
@@ -37,6 +38,11 @@ class PelangganDSL {
     def mulai_mengantri () {
         println(this.name + " masuk antrian.")
         AntrianDSL.masuk_antrian(this)
+    }
+
+    def melakukan_pemesanan(menu) {
+        println(this.name + " memesan " + menu)
+        OrderDSL.pesan(this.name, menu)
     }
 
 }
