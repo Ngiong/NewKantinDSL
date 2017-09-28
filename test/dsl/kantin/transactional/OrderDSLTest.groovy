@@ -13,7 +13,7 @@ class OrderDSLTest extends GroovyTestCase{
             mulai_mengantri()
         }
 
-        OrderDSL.Pesan {
+        def order = OrderDSL.Pesan {
             tambah (2,"Nasi Goreng")
             tambah (1, "Nasi Putih")
             batal (1, "Nasi Putih")

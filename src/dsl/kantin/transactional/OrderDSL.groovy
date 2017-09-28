@@ -35,10 +35,18 @@ class OrderDSL {
     def DineIn() {
         this.makanditempat = true
         this.bungkus = false
+        return this
     }
 
     def TakeAway() {
         this.makanditempat = false
         this.bungkus = true
+        return this
+    }
+
+    def cetak_detail_pesanan() {
+        for (key in pesanan.keySet()) {
+            println("[*]" + key + " -> " + (int) pesanan.get(key) + " porsi")
+        }
     }
 }
