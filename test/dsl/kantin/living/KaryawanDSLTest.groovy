@@ -1,42 +1,28 @@
 package dsl.kantin.living
 
+import dsl.kantin.container.StockDSL
+
 class KaryawanDSLTest extends GroovyTestCase {
     void testKaryawanDSL() {
 
-        KaryawanDSL.menambah_stock{
-            bahan_bernama "kucing"
-            di_tempat_penyimpanan_sebanyak 10
+        KaryawanDSL.menambah_stok{
+            bahan "kucing"
+            sebanyak 10
         }
         println();
 
-        KaryawanDSL.menambah_stock{
-            bahan_bernama "kucing"
-            di_tempat_penyimpanan_sebanyak 5
+        KaryawanDSL.menambah_stok{
+            bahan "kucing"
+            sebanyak 5
         }
         println();
 
-        KaryawanDSL.mengambil_stock{
-            bahan_bernama "kucing"
-            di_tempat_penyimpanan_sebanyak 16
+        KaryawanDSL.mengambil_stok{
+            bahan "kucing"
+            sebanyak 12
         }
         println();
 
-        KaryawanDSL.mengambil_stock{
-            bahan_bernama "kucing"
-            di_tempat_penyimpanan_sebanyak 10
-        }
-        println();
-
-        KaryawanDSL.mengambil_stock{
-            bahan_bernama "kucing"
-            di_tempat_penyimpanan_sebanyak 5
-        }
-
-        println();
-
-        KaryawanDSL.mengambil_stock{
-            bahan_bernama "kucing"
-            di_tempat_penyimpanan_sebanyak 5
-        }
+        StockDSL.print()
     }
 }

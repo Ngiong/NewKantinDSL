@@ -1,68 +1,89 @@
 package dsl.kantin.container
 
-@Singleton
 class StockDSL {
-    static def stock = [:]
+    def stock = [:]
+    def String bahan
+    static def instance
 
-    //ntar kl ada yg butuh stock terisi buat testing
-    static def initStock() {
-        stock['telur'] = 92
-        stock['daging ayam'] = 36
-        stock['beras'] = 34
-        stock['cabe'] = 67
-        stock['timun'] = 25
-        stock['kubis'] = 84
-        stock['jamur'] = 25
-        stock['daging sapi'] = 35
-        stock['santan'] = 36
-        stock['bawang'] = 75
+    //init
+    static def update(closure) {
+        if (instance == null) instance = new StockDSL()
+        def stockDSL = instance
+        closure.delegate = stockDSL
+        closure()
     }
 
-    static def add(bahan, jumlah) {
-        if (bahan != "") {
-            if (stock.containsKey(bahan)) {
-                stock[bahan] = stock[bahan] + jumlah
+    def bahan(target_bahan) {
+        bahan = target_bahan
+    }
+
+    def ada_sebanyak(jumlah) {
+        if (bahan == null) throw Exception("Bahan apa?")
+        stock[bahan] = jumlah
+    }
+
+    def diambil_sebanyak(jumlah) {
+        if (bahan == null) throw IllegalStateException("Bahan apa?")
+        if (jumlah == 0) {
+            println(bahan + " sebanyak " + jumlah.toString() + " berhasil diambil")
+        } else if (jumlah < 0) {
+            throw IllegalStateException("Jumlah yang diambil tidak boleh negatif")
+        } else if (stock.containsKey(bahan)) {
+            if (stock[bahan] > jumlah) {
+                stock[bahan] = stock[bahan] - jumlah
+                println(bahan + " sebanyak " + jumlah.toString() + " berhasil diambil")
+            } else if (stock[bahan] == jumlah) {
+                stock.remove(bahan)
+                println(bahan + " sebanyak " + jumlah.toString() + " berhasil diambil")
             } else {
-                stock.put(bahan, jumlah)
+                throw IllegalStateException("Jumlah " + bahan + " di stok kurang dari yang ingin diambil")
             }
-            println("Berhasil menambahkan stok")
-            println("Stok " + bahan+ " saat ini sebanyak " + stock[bahan].toString())
+        } else {
+            throw NoSuchElementException("Tidak ada bahan bernama " + bahan + " di stok")
         }
     }
 
-    static def subtract(bahan, jumlah) {
-        if (bahan != "") {
-            if (stock.containsKey(bahan)) {
-                if (stock[bahan] > jumlah) {
-                    stock[bahan] = stock[bahan] - jumlah
-                    println("Berhasil mengeluarkan stok")
-                    println("Stok " + bahan + " saat ini sebanyak " + stock[bahan].toString())
-                } else if (stock[bahan] == jumlah) {
-                    stock.remove(bahan)
-                    println("Berhasil mengeluarkan stok")
-                    println("Stok " + bahan+ " saat ini sebanyak 0")
-                } else {
-                    println("Tidak bisa mengeluarkan bahan dari stok")
-                    println("Jumlah yang ingin dikeluarkan lebih dari jumlah yang tersedia")
-                    println("Stok " + bahan + " saat ini sebanyak " + stock[bahan].toString())
-                    println("Banyak " + bahan + " yang ingin dikeluarkan dari stok sebanyak " + jumlah.toString())
-                }
-            } else {
-                println("Tidak bisa mengeluarkan bahan dari stok")
-                println("Jumlah yang ingin dikeluarkan lebih dari jumlah yang tersedia")
-                println("Stok " + bahan + " saat ini sebanyak 0")
-                println("Banyak " + bahan + " yang ingin dikeluarkan dari stok sebanyak " + jumlah.toString())
-            }
+    def ditambah_sebanyak(jumlah) {
+        if (bahan == null) throw IllegalStateException("Bahan apa?")
+        if (stock.containsKey(bahan)) {
+            stock[bahan] = stock[bahan] + jumlah
+            println(bahan + " sebanyak " + jumlah.toString() + " berhasil ditambahkan")
         } else {
-            println("Bahan apa?")
+            stock[bahan] = jumlah
+            println(bahan + " sebanyak " + jumlah.toString() + " berhasil ditambahkan")
         }
     }
 
     static def getStockAmmount(bahan) {
-        if (stock.containsKey(bahan)) {
-            return stock[bahan]
+        if (instance == null) instance = new StockDSL()
+        if (instance.stock.containsKey(bahan)) {
+            return instance.stock[bahan]
         } else {
             return 0
         }
     }
+
+    static def print() {
+        if (instance == null) instance = new StockDSL()
+        println("Di stok terdapat  :")
+        instance.stock.each {
+            k, v ->
+                println("  " + v.toString() + " " + k)
+        }
+    }
+
+    static add(target_bahan, jumlah) {
+        update{
+            bahan(target_bahan)
+            ditambah_sebanyak(jumlah)
+        }
+    }
+
+    static remove(target_bahan, jumlah) {
+        update{
+            bahan(target_bahan)
+            diambil_sebanyak(jumlah)
+        }
+    }
+
 }
